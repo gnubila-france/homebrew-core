@@ -145,9 +145,11 @@ class Python < Formula
     # superenv handles that cc finds includes/libs!
     inreplace "setup.py" do |s|
       s.gsub! "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
+              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.so'"
       s.gsub! "/usr/local/ssl", Formula["openssl"].opt_prefix
       s.gsub! "/usr/include/db4", Formula["berkeley-db4"].opt_include
+      s.gsub! "'/usr/include',", "'#{HOMEBREW_PREFIX}/include','/usr/include',"
+      s.gsub! "'/lib64',", "'#{HOMEBREW_PREFIX}/lib','/lib64',"
     end
 
     if build.universal?
